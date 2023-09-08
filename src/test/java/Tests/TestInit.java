@@ -15,7 +15,7 @@ public class TestInit {
         driver = new ChromeDriver();
     }
     @AfterMethod
-    public void bquit () {
+    public void tearDownDriver() {
         driver.quit();
     }
     public void goToSite (){
