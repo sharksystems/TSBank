@@ -11,12 +11,8 @@ import static com.codeborne.selenide.Selenide.*;
 
 public class TestInit {
 
-//    public WebDriver driver;
     @BeforeMethod
-    public void setup (){
-//        WebDriverManager.chromedriver().setup();
-//        driver = new ChromeDriver();
-//        WebDriverRunner.setWebDriver(driver);
+    public void setupDriver (){
         Configuration.browser = "chrome";
     }
     @AfterMethod

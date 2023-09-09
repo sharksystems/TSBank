@@ -1,37 +1,37 @@
 package tests;
-
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Configuration;
 import org.openqa.selenium.By;
 import org.testng.Assert;
 import pages.LoginPage;
+import static pages.LoginPage.*;
+import static pages.MainHeadPage.*;
 import org.testng.annotations.Test;
+import pages.MainHeadPage;
 import static com.codeborne.selenide.Selenide.*;
 
 
 public class Test1 extends base.TestInit {
     @Test
     public void checkLoginPage() {
-        LoginPage loginPage = new LoginPage();
+        new LoginPage();
         goToSite();
-        loginPage.findCustomerLoginBtn();
-        loginPage.findManagerLoginBtn();
+        findCustomerLoginBtn();
+        findManagerLoginBtn();
 
-        Assert.assertTrue(loginPage.findCustomerLoginBtn().isDisplayed());
-        Assert.assertTrue(loginPage.findCustomerLoginBtn().isEnabled());
-        Assert.assertTrue(loginPage.findManagerLoginBtn().isDisplayed());
-        Assert.assertTrue(loginPage.findManagerLoginBtn().isEnabled());
+        Assert.assertTrue(findCustomerLoginBtn().isDisplayed());
+        Assert.assertTrue(findCustomerLoginBtn().isEnabled());
+        Assert.assertTrue(findManagerLoginBtn().isDisplayed());
+        Assert.assertTrue(findManagerLoginBtn().isEnabled());
     }
     @Test
     public void checkMainHeader (){
-        LoginPage loginPage = new LoginPage();
+        new MainHeadPage();
         goToSite();
-        loginPage.findMainHeadingTxt();
-        loginPage.clickHomeBtn();
+        findMainHeadingTxt();
+        findHomeBtn();
 
-        Assert.assertTrue($(loginPage.mainHeadingTxt).isDisplayed());
-        Assert.assertTrue($(loginPage.homeBtn).isDisplayed());
-        Assert.assertTrue($(loginPage.homeBtn).isEnabled());
+        Assert.assertTrue(findMainHeadingTxt().isDisplayed());
+        Assert.assertTrue(findHomeBtn().isDisplayed());
+        Assert.assertTrue(findHomeBtn().isEnabled());
     }
 
 }
