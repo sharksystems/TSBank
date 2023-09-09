@@ -1,37 +1,31 @@
 package tests;
-import org.openqa.selenium.By;
-import org.testng.Assert;
-import pages.LoginPage;
-import static pages.LoginPage.*;
-import static pages.MainHeadPage.*;
-import org.testng.annotations.Test;
-import pages.MainHeadPage;
-import static com.codeborne.selenide.Selenide.*;
 
+import org.testng.annotations.Test;
+
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.$;
+import static org.testng.Assert.assertTrue;
+import static pages.HomePage.*;
+import static pages.MainHeadPage.*;
 
 public class Test1 extends base.TestInit {
+
     @Test
     public void checkLoginPage() {
-        new LoginPage();
-        goToSite();
-        findCustomerLoginBtn();
-        findManagerLoginBtn();
 
-        Assert.assertTrue(findCustomerLoginBtn().isDisplayed());
-        Assert.assertTrue(findCustomerLoginBtn().isEnabled());
-        Assert.assertTrue(findManagerLoginBtn().isDisplayed());
-        Assert.assertTrue(findManagerLoginBtn().isEnabled());
+        assertTrue($(customerLoginBtn).shouldBe(visible).isDisplayed(),"customer btn not found");
+        assertTrue($(managerLoginBtn).shouldBe(visible).isDisplayed(),"manager btn not found");
     }
+
     @Test
-    public void checkMainHeader (){
-        new MainHeadPage();
-        goToSite();
-        findMainHeadingTxt();
-        findHomeBtn();
+    public void checkMainHeader() {
+//        new MainHeadPage()
+//                .clickHomeBtn()
+//                .clickLogoutBtn();
 
-        Assert.assertTrue(findMainHeadingTxt().isDisplayed());
-        Assert.assertTrue(findHomeBtn().isDisplayed());
-        Assert.assertTrue(findHomeBtn().isEnabled());
+        assertTrue($(mainHeadingTxt).isDisplayed(),"main heading not found");
+        assertTrue($(homeBtn).isDisplayed(),"home btn not found");
+        assertTrue($(logoutBtn).isDisplayed(),"logout btn not found");
+
     }
-
 }

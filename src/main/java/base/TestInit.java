@@ -14,16 +14,11 @@ public class TestInit {
     @BeforeMethod
     public void setupDriver (){
         Configuration.browser = "chrome";
+        open("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
     }
     @AfterMethod
     public void tearDownDriver() {
        closeWebDriver();
     }
-
-    public void goToSite (){
-        open("https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
-    }
-
-
 
 }
