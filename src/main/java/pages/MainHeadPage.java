@@ -5,7 +5,7 @@ import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Selenide.$;
 
-public class MainHeadPage extends PageBase<PageBase> {
+public class MainHeadPage extends BasePage<BasePage> {
 
     public static final By mainHeadingTxt = By.xpath("//strong[@class='mainHeading']");
     public static final By homeBtn = By.xpath("//button[@class='btn home']");
