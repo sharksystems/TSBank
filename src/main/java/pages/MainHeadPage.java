@@ -13,5 +13,4 @@ public class MainHeadPage extends BasePage<MainHeadPage> {
 
     public MainHeadPage clickHomeBtn () {$(homeBtn).shouldBe(Condition.visible).click(); return this;}
     public MainHeadPage clickLogoutBtn () {$(logoutBtn).shouldBe(Condition.visible).click(); return this;}
-
 }

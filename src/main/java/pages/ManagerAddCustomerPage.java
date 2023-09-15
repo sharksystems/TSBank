@@ -38,6 +38,4 @@ public class ManagerAddCustomerPage extends BasePage<ManagerAddCustomerPage> {
         $(addCustomerSubmitBtn).shouldBe(Condition.enabled).click();
         return this;
     }
-
-
 }
