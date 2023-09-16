@@ -7,9 +7,9 @@ import static com.codeborne.selenide.Selenide.$;
 
 public class CustomerMainPage extends BasePage<CustomerMainPage> {
 
-    By customerTransactionsBtn = By.xpath("//button[contains(text(), 'Transactions')]");
-    By customerDepositBtn = By.xpath("//button[contains(text(), 'Deposit')]");
-    By customerWithdrawalBtn = By.xpath("//button[contains(text(), 'Withdrawl')]");
+    By customerTransactionsBtn = By.xpath("//button[@ng-click='transactions()']");
+    By customerDepositBtn = By.xpath("//button[@ng-click='deposit()']");
+    By customerWithdrawalBtn = By.xpath("//button[@ng-click='withdrawl()']");
     By customerAccountSelect = By.xpath("//select[@id='accountSelect']");
 
     public void clickTransactionsBtn() {
