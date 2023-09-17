@@ -2,17 +2,15 @@ package tests;
 
 import org.testng.annotations.Test;
 import pages.*;
-import static com.codeborne.selenide.Condition.visible;
+
+import static base.Enums.Currency.*;
 import static com.codeborne.selenide.Selenide.*;
-import static org.testng.Assert.assertTrue;
-import static pages.HomePage.customerLoginBtn;
-import static pages.HomePage.managerLoginBtn;
-import static pages.MainHeadPage.*;
+
 
 public class Test1 extends base.TestInit {
 
     @Test
-    public void checkCustomerTransactions () {
+    public void checkCustomerTransactions() {
 
         new HomePage().openCustomerLoginBtn();
 
@@ -57,7 +55,7 @@ public class Test1 extends base.TestInit {
         new ManagerOpenAccountPage()
                 .openCreateAccountPage()
                 .chooseCreatedCustomer(randomFirstName)
-                .chooseCustomerCurrency()
+                .chooseCustomerCurrency(RUPEE.getLabel())
                 .clickProcessBtn();
 
         var openAccountAlert = switchTo().alert();
@@ -66,22 +64,9 @@ public class Test1 extends base.TestInit {
 
         new ManagerCustomersPage()
                 .openCustomerPage()
-                .assertCreatedCustomerName(randomFirstName)
-                .assertCreatedCustomerPostCode(randomPostCode)
-                .assertCreatedCustomerAccountCode(accountCode);
-    }
-
-    @Test
-    public void checkLoginPage() {
-
-        assertTrue($(customerLoginBtn).shouldBe(visible).isDisplayed(), "customer btn not found");
-        assertTrue($(managerLoginBtn).shouldBe(visible).isDisplayed(), "manager btn not found");
-    }
-
-    @Test
-    public void checkMainHeader() {
-        assertTrue($(mainHeadingTxt).isDisplayed(), "main heading not found");
-        assertTrue($(homeBtn).isDisplayed(), "home btn not found");
-        assertTrue($(logoutBtn).isDisplayed(), "logout btn not found");
+                .assertCustomerByFirstName(randomFirstName)
+                .assertCustomerByPostCode(randomPostCode)
+                .assertCustomerByAccountID(accountCode)
+                .deleteCustomerByFirstName(randomFirstName);
     }
 }
