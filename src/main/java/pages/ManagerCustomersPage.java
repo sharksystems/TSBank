@@ -1,9 +1,11 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
 import static com.codeborne.selenide.Condition.enabled;
+import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$x;
 import static java.lang.String.format;
 import static org.testng.Assert.assertTrue;
@@ -40,9 +42,12 @@ public class ManagerCustomersPage extends ManagerPageElements {
         assertTrue($x(format("//td[contains(span, '%s')]", accountId)).isDisplayed(), accountId + " not found on customers page");
         return this;
     }
-
-    public ManagerCustomersPage deleteCustomerByFirstName(String name) {
-        $x(format("//td[contains(text(), '%s')]//following-sibling::td/button[@ng-click='deleteCust(cust)']", name)).shouldBe(enabled).click();
+    //td[contains(text(), '%s')]//following-sibling::td/button[@ng-click='deleteCust(cust)']
+    public ManagerCustomersPage deleteCustomerByFirstAndLastName(String name, String lastname) {
+        $x(format("//tr[td[contains(text(), '%s')] and td[contains(text(), '%s')]]//button", name, lastname)).shouldBe(enabled).click();
         return this;
+    }
+    public boolean isCustomersSearchVisible () {
+        return ($(customersSearch).is(enabled));
     }
 }
