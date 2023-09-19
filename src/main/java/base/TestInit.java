@@ -9,8 +9,6 @@ import static com.codeborne.selenide.Selenide.open;
 
 public class TestInit {
 
-    protected final Faker faker = new Faker();
-
     @BeforeMethod
     public void setupDriver (){
         Configuration.browser = "chrome";

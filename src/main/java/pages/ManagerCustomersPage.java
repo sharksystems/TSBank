@@ -1,32 +1,48 @@
 package pages;
 
 import com.codeborne.selenide.Condition;
+import org.openqa.selenium.By;
 
+import static com.codeborne.selenide.Condition.enabled;
 import static com.codeborne.selenide.Selenide.$x;
 import static java.lang.String.format;
 import static org.testng.Assert.assertTrue;
 
-public class ManagerCustomersPage extends BasePage<ManagerCustomersPage> {
+public class ManagerCustomersPage extends ManagerPageElements {
 
-    ManagerMainPage managerMainPage = new ManagerMainPage();
+    private final By customersSearch = By.xpath("//input[@ng-model='searchCustomer']");
+    private final By sortByFirstNameBtn = By.xpath("//a[contains(text(), 'First Name')]");
+    private final By sortByLastNameBtn = By.xpath("//a[contains(text(), 'Last Name')]");
+    private final By sortByPostCodeBtn = By.xpath("//a[contains(text(), 'Post Code')]");
+    private final By accountNumberHeading = By.xpath("//td[contains(text(), 'Account Number')]");
+    private final By deleteCustomerHeading = By.xpath("//td[contains(text(), 'Delete Customer')]");
 
-    public ManagerCustomersPage openCustomerPage () {
-        managerMainPage.clickCustomersBtn();
+    public ManagerCustomersPage openCustomersPage ()  {
+        clickCustomersBtn();
         return this;
     }
 
-    public ManagerCustomersPage assertCreatedCustomerName(String name) {
-        assertTrue($x(format("//td[contains(text(), '%s')]", name)).shouldBe(Condition.visible).isDisplayed(), name + " not found on customers page");
+    public ManagerCustomersPage assertCustomerByFirstName(String firstName) {
+        assertTrue($x(format("//td[contains(text(), '%s')]", firstName)).shouldBe(Condition.visible).isDisplayed(), firstName + " not found on customers page");
+        return this;
+    }
+    public ManagerCustomersPage assertCustomerByLastName(String lastName) {
+        assertTrue($x(format("//td[contains(text(), '%s')]", lastName)).isDisplayed(), lastName + " not found on customers page");
         return this;
     }
 
-    public ManagerCustomersPage assertCreatedCustomerPostCode(String postCode) {
+    public ManagerCustomersPage assertCustomerByPostCode(String postCode) {
         assertTrue($x(format("//td[contains(text(), '%s')]", postCode)).isDisplayed(), postCode + " not found on customers page");
         return this;
     }
 
-    public ManagerCustomersPage assertCreatedCustomerAccountCode(String accountId) {
+    public ManagerCustomersPage assertCustomerByAccountID(String accountId) {
         assertTrue($x(format("//td[contains(span, '%s')]", accountId)).isDisplayed(), accountId + " not found on customers page");
+        return this;
+    }
+
+    public ManagerCustomersPage deleteCustomerByFirstName(String name) {
+        $x(format("//td[contains(text(), '%s')]//following-sibling::td/button[@ng-click='deleteCust(cust)']", name)).shouldBe(enabled).click();
         return this;
     }
 }
