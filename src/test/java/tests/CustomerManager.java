@@ -21,6 +21,7 @@ public class CustomerManager {
         return testCustomer.getPostCode();
     }
     String customerAccountID;
+    String[] customerMultipleAccountsID = {"","",""};
 
     public void createCustomer() {
 
@@ -44,6 +45,33 @@ public class CustomerManager {
         openAccountAlert.accept();
         homePage.clickHomeBtn();
     }
+    public void createCustomerForAccountsCheck() {
+
+        homePage.clickManagerLoginBtn();
+
+        new ManagerAddCustomerPage()
+                .openAddCustomerPage()
+                .enterCustomerFirstName(testCustomer.getFirstName())
+                .enterCustomerLastName(testCustomer.getLastName())
+                .enterRandomCustomerPostCode(testCustomer.getPostCode())
+                .clickCustomerSubmitBtn();
+
+        ManagerOpenAccountPage openAccountPage = new ManagerOpenAccountPage();
+                openAccountPage.openCreateAccountPage();
+                for(int i = 0; i <= 2; i++ ) {
+                    openAccountPage.chooseCreatedCustomer(testCustomer.getFirstName());
+                    switch (i) {
+                        case 0 -> openAccountPage.chooseCustomerCurrency(DOLLAR.getCurrency());
+                        case 1 -> openAccountPage.chooseCustomerCurrency(POUND.getCurrency());
+                        case 2 -> openAccountPage.chooseCustomerCurrency(RUPEE.getCurrency());
+                    }
+                    openAccountPage.clickProcessBtn();
+                    var openAccountAlert = switchTo().alert();
+                    this.customerMultipleAccountsID[i] = openAccountAlert.getText().replaceAll("[^0-9]", "");
+                    openAccountAlert.accept();
+                }
+        homePage.clickHomeBtn();
+    }
     public void deleteCustomer () {
         ManagerCustomersPage customersPage = new ManagerCustomersPage();
 
@@ -54,6 +82,4 @@ public class CustomerManager {
         customersPage.openCustomersPage();
         customersPage.deleteCustomerByFirstAndLastName(testCustomer.getFirstName(), testCustomer.getLastName());
     }
-
-
 }

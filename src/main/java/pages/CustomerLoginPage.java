@@ -11,7 +11,7 @@ public class CustomerLoginPage extends BasePage {
     private final By customerNameSelectField = By.xpath("//select[@id='userSelect']");
     private final By customerLoginBtn = By.xpath("//button[@type='submit']");
 
-    public void clickCustomerLoginBtn() {
+    public void clickCustomerLoginSubmitBtn() {
         $(customerLoginBtn).shouldBe(enabled).click();
     }
 

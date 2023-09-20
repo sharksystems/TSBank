@@ -4,8 +4,30 @@ import org.testng.annotations.Test;
 import pages.*;
 
 import static com.codeborne.selenide.Selenide.*;
+import static data.Currencies.*;
 
 public class BaseTest extends base.TestInit {
+
+    @Test
+    public void checkCustomerAccountCurrencies () {
+
+        CustomerManager customerManager = new CustomerManager();
+        customerManager.createCustomerForAccountsCheck();
+
+        new HomePage().clickCustomerLoginBtn();
+        new CustomerLoginPage()
+                .chooseCustomerName(customerManager.getCustomerFirstName())
+                .clickCustomerLoginSubmitBtn();
+        new CustomerPageElements()
+                .chooseCustomerAccount(customerManager.customerMultipleAccountsID[0])
+                .assertCustomerCurrencyType(DOLLAR.getCurrency())
+                .chooseCustomerAccount(customerManager.customerMultipleAccountsID[1])
+                .assertCustomerCurrencyType(POUND.getCurrency())
+                .chooseCustomerAccount(customerManager.customerMultipleAccountsID[2])
+                .assertCustomerCurrencyType(RUPEE.getCurrency());
+
+        customerManager.deleteCustomer();
+    }
 
     @Test
     public void checkCustomerTransactionWithInvalidData () {
@@ -18,7 +40,7 @@ public class BaseTest extends base.TestInit {
         homePage.clickCustomerLoginBtn();
         new CustomerLoginPage()
                 .chooseCustomerName(customerManager.getCustomerFirstName())
-                .clickCustomerLoginBtn();
+                .clickCustomerLoginSubmitBtn();
         new CustomerDepositPage()
                 .openDepositPage()
                 .enterDepositAmount("0")
@@ -39,7 +61,7 @@ public class BaseTest extends base.TestInit {
 
         new CustomerLoginPage()
                 .chooseCustomerName(customerManager.getCustomerFirstName())
-                .clickCustomerLoginBtn();
+                .clickCustomerLoginSubmitBtn();
 
         new CustomerDepositPage()
                 .openDepositPage()
