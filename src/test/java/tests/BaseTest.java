@@ -30,7 +30,7 @@ public class BaseTest extends base.TestInit {
     }
 
     @Test
-    public void checkCustomerTransactionWithInvalidData () {
+    public void checkCustomerDepositWithInvalidData () {
 
         CustomerManager customerManager = new CustomerManager();
         customerManager.createCustomer();
@@ -45,8 +45,34 @@ public class BaseTest extends base.TestInit {
                 .openDepositPage()
                 .enterDepositAmount("0")
                 .enterDepositAmount("-1")
+                .enterDepositAmount("1.1")
                 .enterDepositAmount("/")
                 .assertNoSuccessfulDeposit();
+
+        customerManager.deleteCustomer();
+    }
+
+    @Test
+    public void checkCustomerWithdrawalWithInvalidData () {
+
+        CustomerManager customerManager = new CustomerManager();
+        customerManager.createCustomer();
+
+        new HomePage().clickCustomerLoginBtn();
+
+        new CustomerLoginPage()
+                .chooseCustomerName(customerManager.getCustomerFirstName())
+                .clickCustomerLoginSubmitBtn();
+
+        new CustomerWithdrawalPage()
+                .openWithdrawalPage()
+                .enterWithdrawalAmount("0")
+                .enterWithdrawalAmount("-1")
+                .enterWithdrawalAmount("/")
+                .enterWithdrawalAmount("1.1")
+                .assertNoSuccessfulWithdrawal()
+                .enterWithdrawalAmount("1")
+                .assertWithdrawalFailMsg();
 
         customerManager.deleteCustomer();
     }

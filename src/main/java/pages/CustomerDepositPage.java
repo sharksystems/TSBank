@@ -38,6 +38,7 @@ public class CustomerDepositPage extends CustomerPageElements {
     }
 
     public CustomerDepositPage enterDepositAmount (String amount) {
+        $(depositInput).shouldBe(enabled).clear();
         $(depositInput).shouldBe(enabled).sendKeys(amount);
         clickDepositSubmitBtn();
         System.out.println("Deposit of "+amount+" made");
