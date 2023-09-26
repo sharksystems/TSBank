@@ -6,7 +6,7 @@ import lombok.Getter;
 @Getter
 public class RandomCustomer {
 
-    protected final Faker faker = new Faker();
+    private final Faker faker = new Faker();
 
     String firstName;
     String lastName;

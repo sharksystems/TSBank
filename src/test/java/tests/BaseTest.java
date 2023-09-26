@@ -1,6 +1,5 @@
 package tests;
 
-import data.RandomCustomer;
 import org.testng.annotations.Test;
 import pages.*;
 
@@ -10,33 +9,85 @@ import static data.Currencies.*;
 public class BaseTest extends base.TestInit {
 
     @Test
-    public void checkCustomerTransactions() {
+    public void checkCustomerAccountCurrencies () {
 
-        RandomCustomer testCustomer = new RandomCustomer();
+        CustomerManager customerManager = new CustomerManager();
+        customerManager.createCustomerForAccountsCheck();
+
+        new HomePage().clickCustomerLoginBtn();
+        new CustomerLoginPage()
+                .chooseCustomerName(customerManager.getCustomerFirstName())
+                .clickCustomerLoginSubmitBtn();
+        new CustomerPageElements()
+                .chooseCustomerAccount(customerManager.customerMultipleAccountsID[0])
+                .assertCustomerCurrencyType(DOLLAR.getCurrency())
+                .chooseCustomerAccount(customerManager.customerMultipleAccountsID[1])
+                .assertCustomerCurrencyType(POUND.getCurrency())
+                .chooseCustomerAccount(customerManager.customerMultipleAccountsID[2])
+                .assertCustomerCurrencyType(RUPEE.getCurrency());
+
+        customerManager.deleteCustomer();
+    }
+
+    @Test
+    public void checkCustomerDepositWithInvalidData () {
+
+        CustomerManager customerManager = new CustomerManager();
+        customerManager.createCustomer();
 
         HomePage homePage = new HomePage();
 
-        homePage.clickManagerLoginBtn();
-
-        new ManagerAddCustomerPage()
-                .openAddCustomerPage()
-                .enterCustomerFirstName(testCustomer.getFirstName())
-                .enterCustomerLastName(testCustomer.getLastName())
-                .enterRandomCustomerPostCode(testCustomer.getPostCode())
-                .clickCustomerSubmitBtn();
-
-        new ManagerOpenAccountPage()
-                .openCreateAccountPage()
-                .chooseCreatedCustomer(testCustomer.getFirstName())
-                .chooseCustomerCurrency(DOLLAR.getCurrency())
-                .clickProcessBtn()
-                .clickHomeBtn();
-
         homePage.clickCustomerLoginBtn();
+        new CustomerLoginPage()
+                .chooseCustomerName(customerManager.getCustomerFirstName())
+                .clickCustomerLoginSubmitBtn();
+        new CustomerDepositPage()
+                .openDepositPage()
+                .enterDepositAmount("0")
+                .enterDepositAmount("-1")
+                .enterDepositAmount("1.1")
+                .enterDepositAmount("/")
+                .assertNoSuccessfulDeposit();
+
+        customerManager.deleteCustomer();
+    }
+
+    @Test
+    public void checkCustomerWithdrawalWithInvalidData () {
+
+        CustomerManager customerManager = new CustomerManager();
+        customerManager.createCustomer();
+
+        new HomePage().clickCustomerLoginBtn();
 
         new CustomerLoginPage()
-                .chooseCustomerName(testCustomer.getFirstName())
-                .clickCustomerLoginBtn();
+                .chooseCustomerName(customerManager.getCustomerFirstName())
+                .clickCustomerLoginSubmitBtn();
+
+        new CustomerWithdrawalPage()
+                .openWithdrawalPage()
+                .enterWithdrawalAmount("0")
+                .enterWithdrawalAmount("-1")
+                .enterWithdrawalAmount("/")
+                .enterWithdrawalAmount("1.1")
+                .assertNoSuccessfulWithdrawal()
+                .enterWithdrawalAmount("1")
+                .assertWithdrawalFailMsg();
+
+        customerManager.deleteCustomer();
+    }
+
+    @Test
+    public void checkCustomerTransactions() {
+
+        CustomerManager customerManager = new CustomerManager();
+        customerManager.createCustomer();
+
+        new HomePage().clickCustomerLoginBtn();
+
+        new CustomerLoginPage()
+                .chooseCustomerName(customerManager.getCustomerFirstName())
+                .clickCustomerLoginSubmitBtn();
 
         new CustomerDepositPage()
                 .openDepositPage()
@@ -55,42 +106,25 @@ public class BaseTest extends base.TestInit {
                 .assertCustomerWithdrawalByAmount("1")
                 .clickResetBtn()
                 .clickHomeBtn();
-        homePage.clickManagerLoginBtn();
 
-        new ManagerCustomersPage()
-                .openCustomersPage()
-                .deleteCustomerByFirstName(testCustomer.getFirstName());
+        customerManager.deleteCustomer();
     }
 
     @Test
     public void checkManagerCustomerCreation() {
 
-        RandomCustomer testCustomer = new RandomCustomer();
+        CustomerManager customerManager = new CustomerManager();
+
+        customerManager.createCustomer();
 
         new HomePage().clickManagerLoginBtn();
 
-        new ManagerAddCustomerPage()
-                .openAddCustomerPage()
-                .enterCustomerFirstName(testCustomer.getFirstName())
-                .enterCustomerLastName(testCustomer.getLastName())
-                .enterRandomCustomerPostCode(testCustomer.getPostCode())
-                .clickCustomerSubmitBtn();
-
-        new ManagerOpenAccountPage()
-                .openCreateAccountPage()
-                .chooseCreatedCustomer(testCustomer.getFirstName())
-                .chooseCustomerCurrency(RUPEE.getCurrency())
-                .clickProcessBtn();
-
-        var openAccountAlert = switchTo().alert();
-        var accountCode = openAccountAlert.getText().replaceAll("[^0-9]", "");
-        openAccountAlert.accept();
-
         new ManagerCustomersPage()
                 .openCustomersPage()
-                .assertCustomerByFirstName(testCustomer.getFirstName())
-                .assertCustomerByPostCode(testCustomer.getPostCode())
-                .assertCustomerByAccountID(accountCode)
-                .deleteCustomerByFirstName(testCustomer.getFirstName());
+                .assertCustomerByFirstName(customerManager.getCustomerFirstName())
+                .assertCustomerByPostCode(customerManager.getCustomerPostCode())
+                .assertCustomerByAccountID(customerManager.customerAccountID);
+
+        customerManager.deleteCustomer();
     }
 }
